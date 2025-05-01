@@ -178,7 +178,7 @@ export async function uploadFile2(file) {
   formData.append("file", file);
 
   try {
-    const response = await fetch("https://78.24.223.206:8082/api/files/upload", {
+    const response = await fetch("https://78.24.223.206:8085/api/files/upload", {
       method: "POST",
       headers: {
         Authorization: `Bearer ${localStorage.getItem("accessToken")}`, // Добавляем токен в заголовки
