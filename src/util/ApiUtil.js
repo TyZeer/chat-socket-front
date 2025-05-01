@@ -1,4 +1,4 @@
-const ROOT_URL = "https://78.24.223.206:8085";
+const ROOT_URL = "https://shibut.mihail.fvds.ru:8085";
 
 const request = async (options) => {
   const headers = new Headers();
