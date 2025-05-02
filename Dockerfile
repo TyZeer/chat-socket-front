@@ -1,15 +1,20 @@
-FROM node:20.12.2
+FROM node:18-alpine AS builder
 
 WORKDIR /app
+
+# Добавляем переменную окружения
+ENV NODE_OPTIONS="--openssl-legacy-provider"
 
 COPY package*.json ./
 RUN npm install
 
 COPY . .
+RUN npm run build
 
-EXPOSE 3001
+FROM nginx:alpine
 
-ENV NODE_OPTIONS="--openssl-legacy-provider"
-ENV PORT=3001
+# Копируем сборку React (из папки build, не dist!)
+COPY --from=builder /app/build /usr/share/nginx/html
 
-CMD ["npm", "start"]
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]

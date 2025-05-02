@@ -91,7 +91,7 @@ const Chat = (props) => {
   const connect = () => {
     const Stomp = require("stompjs");
     var SockJS = require("sockjs-client");
-    SockJS = new SockJS("https://78.24.223.206:8085/ws");
+    SockJS = new SockJS("http://78.24.223.206:8082/ws");
     stompClient = Stomp.over(SockJS);
     stompClient.connect(
       { Authorization: `Bearer ${localStorage.getItem("accessToken")}` },

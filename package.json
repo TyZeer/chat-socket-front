@@ -1,8 +1,7 @@
 {
-  "name": "chat-socket-front",
+  "name": "jwt-social-login-client",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://tyzeer.github.io/chat-socket-front",
   "dependencies": {
     "@ant-design/icons": "^4.2.1",
     "@stomp/stompjs": "^7.1.1",
