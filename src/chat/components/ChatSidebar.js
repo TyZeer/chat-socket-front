@@ -16,6 +16,11 @@ const ChatSidebar = ({
   const handleProfileNavigation = () => {
     history.push("/");
   };
+
+  const getChatTypeLabel = (type) => {
+    return type === "GROUP" ? "Групповой" : "Приватный";
+  };
+
   return (
     <div id="sidepanel">
       <div id="profile">
@@ -47,6 +52,7 @@ const ChatSidebar = ({
                 <img id={chat.id} src={defaultAvatar} alt="" />
                 <div className="meta">
                   <p className="name">{chat.name}</p>
+                  <p className="chat-type">{getChatTypeLabel(chat.type)}</p>
                 </div>
                 {chat.hasNotification && (
                   <span style={{ backgroundColor: "red" }}></span>

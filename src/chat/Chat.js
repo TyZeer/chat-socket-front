@@ -226,10 +226,11 @@ const Chat = (props) => {
     let chatNameToUse = chatName.trim();
 
     if (selectedUserIds.length === 1) {
+      // For private chat, create name as "currentUser - selectedUser"
       const selectedUser = allUsers.find(
         (user) => user.id === selectedUserIds[0]
       );
-      chatNameToUse = selectedUser ? selectedUser.username : chatNameToUse;
+      chatNameToUse = `${currentUser.username} - ${selectedUser.username}`;
     } else if (chatNameToUse === "") {
       message.warning("Please enter a chat name");
       return;
@@ -269,6 +270,17 @@ const Chat = (props) => {
         <div className="contact-profile">
           <img src={activeChat && defaultAvatar} alt="" />
           <p>{activeChat && activeChat.name}</p>
+          {/* Users info */}
+          {activeChat && (activeChat.members || activeChat.users || activeChat.participants) && (
+            <div className="chat-users-info">
+              <span>
+                {(() => {
+                  const users = activeChat.members || activeChat.users || activeChat.participants;
+                  return `${users.length} участник(ов): ` + users.map(u => u.username || u.name || u).join(", ");
+                })()}
+              </span>
+            </div>
+          )}
         </div>
         <ChatMessages
           messages={messages}
@@ -284,6 +296,8 @@ const Chat = (props) => {
               setFile(event.target.files[0]);
             }
           }}
+          file={file}
+          setFile={setFile}
         />
       </div>
       <Modal

@@ -14,6 +14,7 @@ const ChatMessages = ({ messages, currentUser, setMessages }) => {
   const [editMessageContent, setEditMessageContent] = useState("");
   const [editingMessageId, setEditingMessageId] = useState(null);
   const [activeMessageId, setActiveMessageId] = useState(null); // Track the active message for showing actions
+  const [imageModal, setImageModal] = useState({ open: false, url: null, filename: null });
 
   const handleDeleteMessage = (messageId) => {
     deleteChatMessage(messageId)
@@ -54,6 +55,25 @@ const ChatMessages = ({ messages, currentUser, setMessages }) => {
       });
   };
 
+  // Получить прямую ссылку на файл через getFile
+  const handleImageClick = async (fileUrl, filename) => {
+    // fileUrl - это id или путь, getFile вернет {url}
+    const { getFile } = await import("../../util/ApiUtil");
+    const response = await getFile(fileUrl);
+    setImageModal({ open: true, url: response.url, filename });
+  };
+
+  const handleDownload = () => {
+    if (imageModal.url) {
+      const link = document.createElement("a");
+      link.href = imageModal.url;
+      link.download = imageModal.filename || "image.jpg";
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+  };
+
   return (
     <>
       <ScrollToBottom className="messages">
@@ -76,12 +96,17 @@ const ChatMessages = ({ messages, currentUser, setMessages }) => {
             >
               {msg.fileUrl && (
                 isImage(msg.fileUrl) ? (
-                  <Image file={msg.fileUrl} />
+                  <span style={{display: 'inline-block', cursor: 'pointer'}} onClick={() => handleImageClick(msg.fileUrl, msg.fileUrl.split('/').pop())}>
+                    <Image file={msg.fileUrl} />
+                  </span>
                 ) : (
                   <FileLink file={msg.fileUrl} />
                 )
               )}
               <p>{msg.content}</p>
+              <div className="message-sender">
+                {msg.sender?.username || msg.sender}
+              </div>
               {msg.sender?.id === currentUser.id && activeMessageId === msg.id && (
                 <div className="message-actions">
                   <Button
@@ -103,6 +128,32 @@ const ChatMessages = ({ messages, currentUser, setMessages }) => {
           ))}
         </ul>
       </ScrollToBottom>
+
+      <Modal
+        open={imageModal.open}
+        onCancel={() => setImageModal({ open: false, url: null, filename: null })}
+        footer={null}
+        centered
+        width={Math.min(window.innerWidth, 600)}
+        bodyStyle={{ textAlign: "center", padding: 0, background: "#222" }}
+      >
+        {imageModal.url && (
+          <>
+            <img
+              src={imageModal.url}
+              alt="full"
+              style={{ maxWidth: "100%", maxHeight: "70vh", display: "block", margin: "0 auto" }}
+            />
+            <Button
+              type="primary"
+              style={{ margin: "16px auto 16px auto", display: "block" }}
+              onClick={handleDownload}
+            >
+              Скачать
+            </Button>
+          </>
+        )}
+      </Modal>
 
       <Modal
         title="Edit Message"
