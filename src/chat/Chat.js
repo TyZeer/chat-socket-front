@@ -276,9 +276,16 @@ const Chat = (props) => {
               <span>
                 {(() => {
                   const users = activeChat.members || activeChat.users || activeChat.participants;
-                  return `${users.length} участник(ов): ` + users.map(u => u.username || u.name || u).join(", ");
+                  const usersText = users.map(u => u.username || u.name || u).join(", ");
+                  return `${users.length} участник(ов): ` + usersText;
                 })()}
               </span>
+              <div className="tooltip">
+                {(() => {
+                  const users = activeChat.members || activeChat.users || activeChat.participants;
+                  return users.map(u => u.username || u.name || u).join(", ");
+                })()}
+              </div>
             </div>
           )}
         </div>

@@ -38,16 +38,20 @@ const Profile = (props) => {
     <div className="profile-container">
       <Card
         style={{ width: 420, border: "1px solid #e1e0e0" }}
-        actions={[<LogoutOutlined onClick={logout} />]}
+        actions={[
+          <Button key="chat" block>
+            <Link to={"/chat"}>Перейти в чаты</Link>
+          </Button>,
+          <Button key="logout" block onClick={logout}>
+            <LogoutOutlined /> Выйти
+          </Button>
+        ]}
       >
         <Meta
           avatar={<Avatar src={defaultImage} className="user-avatar-circle" />}
           title={currentUser.username}
           description={"@" + currentUser.username}
         />
-        <Button>
-          <Link to={"/chat"}>Перейти в чаты</Link>
-        </Button>
       </Card>
     </div>
   );
