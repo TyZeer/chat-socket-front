@@ -97,7 +97,6 @@ const Chat = (props) => {
       { Authorization: `Bearer ${localStorage.getItem("accessToken")}` },
       async function (frame) {
         setIsConnected(true);
-        // Подписываемся на уведомления для текущего пользователя
         stompClient.subscribe(
           `/user/${currentUser.username}/queue/notifications`,
           onNotificationReceived
@@ -125,10 +124,10 @@ const Chat = (props) => {
       console.warn("Received an empty or invalid notification:", message);
       return;
     }
-    // Play notification sound when a new message is received
+  
     playNotificationSound();
     setChats((prevChats) => {
-      console.log("Previous chats:", prevChats); // Логируем предыдущее состояние
+      console.log("Previous chats:", prevChats); 
       const chat = prevChats.find((chat) => chat.id == notificationChat);
       if (chat) {
         console.log(activeChatRef, chat);

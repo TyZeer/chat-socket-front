@@ -1,5 +1,13 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+## Запуск проекта
+Для запуска проекта необходимо запустить Docker Desktop, далее ввести команду
+в корне проекта
+```bash
+docker build <название_образа> .
+docker run -d -p <внешний_порт>:<внутренний_порт> <название_образа>
+```
+
 ## Available Scripts
 
 In the project directory, you can run:
